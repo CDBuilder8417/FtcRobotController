@@ -13,10 +13,10 @@ public class FlyWheel extends OpMode {
     public DcMotorEx flywheelMotor;
 
     public double highVelocity=1500;
-    public double lowVelocity=900;
+    public double lowVelocity=1200;
     double curTargetVelocity=highVelocity;
-    double F=0;
-    double P=0;
+    double F=-650;
+    double P=19;
     double[] stepSizes= {10.0, 1.0, 0.1, 0.01, 0.001, 0.0001};
     int stepIndex=1;
 
@@ -25,7 +25,7 @@ public class FlyWheel extends OpMode {
     public void init() {
         flywheelMotor=hardwareMap.get(DcMotorEx.class, "LauncherMotor");
         flywheelMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        flywheelMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        flywheelMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         PIDFCoefficients pidfCoefficients= new PIDFCoefficients(P,0,0,F);
         flywheelMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
