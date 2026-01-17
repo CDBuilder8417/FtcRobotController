@@ -7,19 +7,23 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.Light;
 import org.firstinspires.ftc.teamcode.TMotor;
 
 import java.lang.annotation.Target;
 
 @TeleOp (name= "limelight", group= "main")
 public class limelight extends OpMode {
-    TMotor bench=new TMotor();
+    TMotor bench = new TMotor();
+    Light lightbench = new Light();
     private Limelight3A limelight;
     private IMU imu;
     private DcMotor TurretMotor;
+
 
 
     private double distance;
@@ -27,7 +31,7 @@ public class limelight extends OpMode {
     @Override
     public void init() {
         limelight=hardwareMap.get(Limelight3A.class, "limelight");
-        limelight.pipelineSwitch(0); // april tag #11 pipeline
+        limelight.pipelineSwitch(0);
 
         imu= hardwareMap.get(IMU.class, "imu");
         RevHubOrientationOnRobot revHubOrientationOnRobot= new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,
@@ -42,7 +46,7 @@ public class limelight extends OpMode {
     }
 
     public void init(HardwareMap hwMap) {
-
+        lightbench.init(hardwareMap);
         TurretMotor= hwMap.get(DcMotor.class, "TMotor");
         TurretMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
@@ -79,6 +83,18 @@ public class limelight extends OpMode {
         }
 
         telemetry.addData("Tx", "llresult.getTx");
+
+        if (distance > 4) {
+            lightbench.setServoPos(0.277);
+        }
+
+        else if (distance < 2 && distance > 4) {
+            lightbench.setServoPos(0.500);
+        }
+
+        else {
+            lightbench.setServoPos(0.388);
+        }
 
     }
 
