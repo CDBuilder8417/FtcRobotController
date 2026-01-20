@@ -11,14 +11,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 @TeleOp
 public class FlyWheel extends OpMode {
     public DcMotorEx flywheelMotor;
-
-    public double highVelocity=1500;
     public double lowVelocity=1200;
-    double curTargetVelocity=highVelocity;
-    double F=-650;
-    double P=19;
-    double[] stepSizes= {10.0, 1.0, 0.1, 0.01, 0.001, 0.0001};
-    int stepIndex=1;
 
 
     @Override
@@ -27,7 +20,7 @@ public class FlyWheel extends OpMode {
         flywheelMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheelMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        PIDFCoefficients pidfCoefficients= new PIDFCoefficients(P,0,0,F);
+        PIDFCoefficients pidfCoefficients= new PIDFCoefficients(19,0,0,-650);
         flywheelMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
 
         telemetry.addLine("Init complete");
@@ -36,46 +29,9 @@ public class FlyWheel extends OpMode {
 
     @Override
     public void loop() {
-        if (gamepad1.yWasPressed()) {
-            if (curTargetVelocity== highVelocity) {
-                curTargetVelocity= lowVelocity;
-            }
-            else {curTargetVelocity= highVelocity; }
-        }
 
-        if (gamepad1.bWasPressed()) {
-            stepIndex= (stepIndex+1) % stepSizes.length;
-        }
+        flywheelMotor.setVelocity(lowVelocity);
 
-        if (gamepad1.dpadLeftWasPressed()) {
-            F-= stepSizes[stepIndex];
-        }
 
-        if (gamepad1.dpadRightWasPressed()) {
-            F+= stepSizes[stepIndex];
-        }
-    
-            if (gamepad1.dpadDownWasPressed()) {
-                P+= stepSizes[stepIndex];
-            }
-    
-            if (gamepad1.dpadUpWasPressed()) {
-                P-= stepSizes[stepIndex];
-            }
-
-        PIDFCoefficients pidfCoefficients= new PIDFCoefficients(P,0,0,F);
-        flywheelMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
-
-        flywheelMotor.setVelocity(curTargetVelocity);
-
-        double curVelocity= flywheelMotor.getVelocity();
-        double error= curTargetVelocity-curVelocity;
-
-        telemetry.addData("Target Velocity", curTargetVelocity);
-        telemetry.addData("current Velocity", "%.2f", curVelocity);
-        telemetry.addData("Error", "%.2f", error);
-        telemetry.addData("Tuning P", "%.4f (D-Pad U/D)", P);
-        telemetry.addData("Tuning F", "%.4f (D-Pad L/R)", F);
-        telemetry.addData("Step Size", "%.4f (B Button)", stepSizes[stepIndex]);
     }
 }

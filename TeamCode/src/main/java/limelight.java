@@ -13,12 +13,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.Light;
 import org.firstinspires.ftc.teamcode.TMotor;
+import org.firstinspires.ftc.teamcode.TServo;
 
 import java.lang.annotation.Target;
 
 @TeleOp (name= "limelight", group= "main")
 public class limelight extends OpMode {
-    TMotor bench = new TMotor();
+    TServo bench = new TServo();
     Light lightbench = new Light();
     private Limelight3A limelight;
     private IMU imu;
@@ -69,17 +70,27 @@ public class limelight extends OpMode {
 
         if (Tx < -3) {
             telemetry.addData("Tx", "TurretLeft");
-            bench.setMotorSpeed(-0.2);
+            if (Tx < -10) {
+                bench.setServoPos(-1);
+            }
+            else {
+                bench.setServoPos(-1*Tx/10);
+            }
         }
 
         else if (Tx > 3) {
             telemetry.addData("Tx", "TurretRight");
-            bench.setMotorSpeed(0.2);
+            if (Tx > 10) {
+                bench.setServoPos(1);
+            }
+            else {
+                bench.setServoPos(1*Tx/10);
+            }
         }
 
         else {
             telemetry.addData("Tx", "Good");
-            bench.setMotorSpeed(0);
+            bench.setServoPos(0);
         }
 
         telemetry.addData("Tx", "llresult.getTx");
