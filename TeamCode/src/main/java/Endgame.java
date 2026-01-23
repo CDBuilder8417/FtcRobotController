@@ -21,7 +21,7 @@ public class Endgame extends OpMode {
 
     @Override
     public void loop() {
-        double motorSpeed = gamepad1.left_stick_y;
+        double motorSpeed = gamepad2.left_stick_y;
         motorbench.setMotorSpeed(motorSpeed);
 
         if (touchbench.touchSensorPressed()) {
