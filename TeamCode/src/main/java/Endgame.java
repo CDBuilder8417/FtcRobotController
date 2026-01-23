@@ -9,35 +9,25 @@ import org.firstinspires.ftc.teamcode.EndgameTouch;
 
 @TeleOp
 public class Endgame extends OpMode {
-
-    Endgame_Servos servobench = new Endgame_Servos();
     EndgameMotor motorbench = new EndgameMotor();
     EndgameTouch touchbench = new EndgameTouch();
 
 
     @Override
     public void init() {
-        servobench.init(hardwareMap);
         motorbench.init(hardwareMap);
         touchbench.init(this);
     }
 
     @Override
     public void loop() {
-        if (gamepad1.a) {
-            servobench.setServoPos(0.0);
-        }
-
-        else {
-            servobench.setServoPos(1.0);
-        }
-
         double motorSpeed = gamepad1.left_stick_y;
         motorbench.setMotorSpeed(motorSpeed);
 
         if (touchbench.touchSensorPressed()) {
             motorbench.setMotorSpeed(Range.clip(motorSpeed, 0.0, 1.0));
-        } else {
+        }
+        else {
             motorbench.setMotorSpeed(motorSpeed);
         }
 

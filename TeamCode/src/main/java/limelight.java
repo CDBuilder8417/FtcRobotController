@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.Light;
 import org.firstinspires.ftc.teamcode.TMotor;
 import org.firstinspires.ftc.teamcode.TServo;
+import org.firstinspires.ftc.teamcode.WhiteLight;
 
 import java.lang.annotation.Target;
 
@@ -21,6 +22,8 @@ import java.lang.annotation.Target;
 public class limelight extends OpMode {
     TServo bench = new TServo();
     Light lightbench = new Light();
+
+    WhiteLight WhiteLightbench = new WhiteLight();
     private Limelight3A limelight;
     private IMU imu;
     private DcMotor TurretMotor;
@@ -106,6 +109,8 @@ public class limelight extends OpMode {
         else {
             lightbench.setServoPos(0.388);
         }
+
+      
 
     }
 
